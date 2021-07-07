@@ -30,5 +30,3 @@ export default class KnexDB{
         })
     }
 }
-
-//const KnexDB = new Knex();

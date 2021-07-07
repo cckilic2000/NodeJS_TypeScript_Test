@@ -10,4 +10,3 @@ userRouter.delete('/delete/:id', userController.deleteOneUser);
 const baseRouter = express.Router();
 baseRouter.use('/users', userRouter);
 export default baseRouter;
-//export default userRouter;

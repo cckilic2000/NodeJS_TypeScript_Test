@@ -1,61 +1,7 @@
-import jsonfile from 'jsonfile';
 import User, { IUser } from '@entities/User';
-import pool from "@db/pool"
-import { PoolClient } from 'pg';
-import KnexDB from "../db/knex"
-import { resolve } from 'path/posix';
-import { rejects } from 'assert/strict';
-import { isBuffer } from 'util';
-
-
-
-class IDatabase {
-    users: IUser[];
-
-    constructor(){
-        this.users = [];
-    }
-}
-
+import KnexDB from "../db/knex";
 
 class UserRepository {
-
-    //private readonly dbFilePath: any;
-
-
-    //constructor(){
-        //this.dbFilePath = 'src/daos/MockDb/MockDb.json';
-        //this.dbConnect();
-    //}
-
-
-    //private dbConnect() {
-    //    pool.connect(function (err, client, done) {
-    //        if (err) console.log("db connection error in dbConnect()");
-    //        console.log("Connected");
-    //      }); 
-    //}
-
-    //public openDb(): Promise<IDatabase> {
-    //    try {
-    //        return jsonfile.readFile(this.dbFilePath) as Promise<IDatabase>;    
-    //    } catch (error) {
-    //        console.log("Error in openDb:" + error);
-    //        return error;
-    //    }
-    //}
-
-
-    //public saveDb(db: IDatabase): Promise<void> {
-    //    try {
-    //        return jsonfile.writeFile(this.dbFilePath, db);
-    //    } catch (error) {
-    //        console.log("Error in saveDb: "+ error);
-    //        return error;
-    //    }
-    //}
-
-    //public knx: typeof KnexDB;
 
     knx: KnexDB;
 
@@ -64,21 +10,15 @@ class UserRepository {
         this.knx.init(); 
     }
 
-    async getAll(): Promise<IDatabase>{
-        return new Promise<IDatabase>( async ( resolve, reject)=>{
+    async getAll(): Promise<IUser[]>{
+        return new Promise<IUser[]>( async ( resolve, reject)=>{
             await this.knx.db("test_db")
             .select("*")
-            .then((users)=>{
+            .then((users:IUser[])=>{
                 if(users){
-                    const resArr:IDatabase = new IDatabase();
-                    users.forEach(element => {
-                        const userTemp:User = new User(element.name, element.email, element.id);
-                        resArr.users.push(userTemp); 
-                    });
-                    resolve(resArr);
+                    resolve(users);
                 }else{
-                    console.log("error in user getOne repo then: ");
-                    reject();
+                    reject(new Error());
                 }
             })
             .catch((e:Error)=>{
@@ -88,21 +28,16 @@ class UserRepository {
         });
     }
 
-    async getOne(emailParam: string):Promise<IUser|null>{
+    async getOne(emailParam: string):Promise<IUser>{
         return new Promise<IUser>(async (resolve,reject)=>{
             await this.knx.db("test_db")
             .select("*")
-            .then((users)=>{
+            .where("email", emailParam)
+            .then((users:IUser[])=>{
                 if(users){
-                    users.forEach(element => {
-                        if(element.email === emailParam){
-                            const userRes:User = new User(element.name,element.email,element.id);
-                            resolve(userRes);
-                        }
-                    });
+                    resolve(users[0]);
                 }else{
-                    console.log("error in user getOne repo then: ");
-                    reject();
+                    reject(new Error());
                 }
             })
             .catch((e:Error)=>{
@@ -112,12 +47,16 @@ class UserRepository {
         });
     }
 
-    async add(user:IUser):Promise<boolean>{
-        return new Promise<boolean>(async(resolve,reject)=>{
+    async add(user:IUser):Promise<number>{
+        return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
-            .insert({name:user.name,email:user.email,id:user.id})
-            .then(()=>{
-                resolve(true);
+            .insert(user)
+            .then((result:number[])=>{
+                if(result){
+                    resolve(result[0]);
+                }else{
+                    reject(new Error());
+                }
             })
             .catch((e:Error)=>{
                 console.log("error in user add repo catch: " + e);
@@ -126,13 +65,17 @@ class UserRepository {
         });
     }
 
-    async update(user:IUser):Promise<boolean>{
-        return new Promise<boolean>(async(resolve,reject)=>{
+    async update(user:IUser):Promise<number>{
+        return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
             .where(user.id)
-            .update({name:user.name, email:user.email})
-            .then(()=>{
-                resolve(true);
+            .update(user)
+            .then((res:number)=>{
+                if(res){
+                    resolve(res);
+                }else{
+                    reject(new Error());
+                }
             })
             .catch((e:Error)=>{
                 console.log("error in user update repo catch: " + e);
@@ -141,13 +84,17 @@ class UserRepository {
         });
     }
 
-    async delete(id:number):Promise<boolean>{
-        return new Promise<boolean>(async(resolve,reject)=>{
+    async delete(id:number):Promise<number>{
+        return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
             .where(id)
             .delete()
-            .then(()=>{
-                resolve(true);
+            .then((res:number)=>{
+                if(res){
+                    resolve(res);
+                }else{
+                    reject(new Error());
+                }
             })
             .catch((e:Error)=>{
                 console.log("error in user delete repo catch: " + e);
@@ -155,8 +102,6 @@ class UserRepository {
             })
         });
     }
-
-
 }
 
 const userRepository = new UserRepository();

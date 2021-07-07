@@ -3,8 +3,7 @@ import Joi from 'joi';
 
 export const UserSchema = Joi.object({
     name: Joi.string().required(),
-    email: Joi.string().email().max(13)
-      .required(),
+    email: Joi.string().email().required(),
     id: Joi.number()
 }).label('User');
 
