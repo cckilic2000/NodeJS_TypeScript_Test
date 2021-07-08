@@ -1,4 +1,4 @@
-import userController from "@Controllers/UserController";
+import userController from "src/controllers/UserController";
 import * as express from "express"
 
 const userRouter = express.Router();

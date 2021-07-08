@@ -1,8 +1,8 @@
 import * as express from "express"
-import userService from "@Services/UserService"
+import userService from "src/services/UserService"
 
 import StatusCodes from 'http-status-codes';
-import { UserSchema } from "src/Validations/UserValidation";
+import { UserSchema } from "src/validations/UserValidation";
 import Joi, { ValidationError } from "joi";
 import { IUser } from "@entities/User";
 const { BAD_REQUEST, CREATED, OK } = StatusCodes;

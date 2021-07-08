@@ -3,7 +3,7 @@ import StatusCodes from 'http-status-codes';
 import { SuperTest, Test } from 'supertest';
 
 import app from '@server';
-import UserService from '@Services/UserService';
+import UserService from 'src/services/UserService';
 import User, { IUser } from '@entities/User';
 import { pErr } from '@shared/functions';
 import { paramMissingError } from '@shared/constants';

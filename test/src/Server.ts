@@ -17,7 +17,7 @@ import KnexDB from "./db/knex"
 import logger from '@shared/Logger';
 import User from '@entities/User';
 //import userController from '@Controllers/UserController';
-import baseRouter from './Controllers';
+import baseRouter from './controllers';
 
 
 

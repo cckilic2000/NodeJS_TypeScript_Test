@@ -79,13 +79,13 @@
         "src/Server"
       ],
       "@Repositories/*":[
-        "src/Repositories/*"
+        "src/repositories/*"
       ],
       "@Services/*":[
-        "src/Services/*"
+        "src/services/*"
       ],
       "@Controllers/*":[
-        "src/Controllers/*"
+        "src/controllers/*"
       ],
       "@db/*":[
         "src/db/*"

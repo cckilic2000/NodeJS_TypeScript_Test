@@ -1,6 +1,6 @@
 import User, { IUser } from '@entities/User';
 import { getRandomInt } from '@shared/functions';
-import userRepository from '@Repositories/UserRepository';
+import userRepository from 'src/repositories/UserRepository';
 
 
 
