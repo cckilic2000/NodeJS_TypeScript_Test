@@ -6,13 +6,10 @@ import userRepository from 'src/repositories/UserRepository';
 
 class UserService {
 
-    public async getOne(email: string): Promise<IUser | null> {
+    public async getOne(email: string): Promise<IUser> {
         try {
             const db = await userRepository.getOne(email);    
-            if (db && db.email === email) {
-                return db;
-            }
-            return null;
+            return db;
         } catch (error) {
             console.log("Error in UserService getOne: " + error);
             return error;
@@ -38,7 +35,7 @@ class UserService {
             return done;    
         } catch (error) {
             console.log("Error in UserService add: " + error);
-            return -1;    
+            return error;    
         }
     }
 
@@ -49,7 +46,7 @@ class UserService {
             return db;
         } catch (error) {
             console.log("Error in UserService update: " + error);
-            return -2;
+            return error;
         }
         
     }
@@ -61,7 +58,7 @@ class UserService {
             return db;
         } catch (error) {
             console.log("Error in UserService delete: " + error);
-            return -3;
+            return error;
         }
     }
 }

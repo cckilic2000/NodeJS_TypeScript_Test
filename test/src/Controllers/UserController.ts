@@ -2,7 +2,7 @@ import * as express from "express"
 import userService from "src/services/UserService"
 
 import StatusCodes from 'http-status-codes';
-import { addSchema , getOneSchema , deleteSchema , updateSchema } from "src/validations/UserValidation";
+import { userSchema } from "src/validations/UserValidation";
 import Joi from "joi";
 import { IUser } from "@entities/User";
 const { BAD_REQUEST, CREATED, OK } = StatusCodes;
@@ -30,9 +30,9 @@ class UserController{
     }
 
     getOneUser(req: express.Request, res: express.Response, next: express.NextFunction){
-        const email = req.body.user.email;
+        const email = req.body;
         
-        getOneSchema.validateAsync(email).then((result:string)=>{
+        userSchema.getOne.validateAsync(email).then((result:string)=>{
             userService.getOne(result)
             .then((result)=>{
                 return res.status(OK).json({result}).end();
@@ -48,7 +48,7 @@ class UserController{
     addOneUser(req: express.Request, res: express.Response, next: express.NextFunction){
         const { user } = req.body;
 
-        addSchema.validateAsync(user).then((result:IUser)=>{
+        userSchema.add.validateAsync(user).then((result:IUser)=>{
             userService.add(result)
             .then((result)=>{
                 return res.status(CREATED).end();
@@ -64,7 +64,7 @@ class UserController{
     updateOneUser(req: express.Request, res: express.Response, next: express.NextFunction){
         const { user } = req.body;
 
-        updateSchema.validateAsync(user).then((result:IUser)=>{
+        userSchema.update.validateAsync(user).then((result:IUser)=>{
             user.id = Number(user.id);
             userService.update(result)
             .then((result)=>{
@@ -79,9 +79,9 @@ class UserController{
     }
 
     deleteOneUser(req: express.Request, res: express.Response, next: express.NextFunction){
-        const { id } = req.params;
+        const id = req.body;
 
-        deleteSchema.validateAsync(id).then((result:number)=>{
+        userSchema.delete.validateAsync(id).then((result:number)=>{
             userService.delete(Number(id))
             .then((result)=>{
                 return res.status(OK).end();

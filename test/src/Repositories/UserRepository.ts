@@ -1,4 +1,4 @@
-import User, { IUser } from '@entities/User';
+import { IUser } from '@entities/User';
 import KnexDB from "../db/knex";
 
 class UserRepository {
@@ -33,9 +33,10 @@ class UserRepository {
             await this.knx.db("test_db")
             .select("*")
             .where("email", emailParam)
-            .then((users:IUser[])=>{
+            .first()
+            .then((users:IUser)=>{
                 if(users){
-                    resolve(users[0]);
+                    resolve(users);
                 }else{
                     reject(new Error());
                 }
@@ -51,6 +52,7 @@ class UserRepository {
         return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
             .insert(user)
+            .select("id")
             .then((result:number[])=>{
                 if(result){
                     resolve(result[0]);
@@ -68,8 +70,9 @@ class UserRepository {
     async update(user:IUser):Promise<number>{
         return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
-            .where(user.id)
+            .where("id",user.id)
             .update(user)
+            .select("id")
             .then((res:number)=>{
                 if(res){
                     resolve(res);
@@ -87,8 +90,9 @@ class UserRepository {
     async delete(id:number):Promise<number>{
         return new Promise<number>(async(resolve,reject)=>{
             await this.knx.db("test_db")
-            .where(id)
-            .delete()
+            .where("id",id)
+            .del()
+            .select("id")
             .then((res:number)=>{
                 if(res){
                     resolve(res);

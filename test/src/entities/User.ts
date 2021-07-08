@@ -1,12 +1,12 @@
 export interface IUser {
-    id: number;
+    id: number|null;
     name: string;
     email: string;
 }
 
 class User implements IUser {
 
-    public id: number;
+    public id: number|null;
     public name: string;
     public email: string;
 
