@@ -1,12 +1,21 @@
-import IUser from '@entities/User';
 import Joi from 'joi';
 
-export const UserSchema = Joi.object({
+export const addSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     id: Joi.number()
-}).label('User');
+}).label('Add');
 
-//export type User = IUser;
+export const updateSchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    id: Joi.number()
+}).label('Update');
 
+export const deleteSchema = Joi.object({
+    id: Joi.number().required()
+}).label('Delete');
 
+export const getOneSchema = Joi.object({
+    email: Joi.string().email().required()
+}).label('GetOne');
