@@ -5,7 +5,7 @@ import StatusCodes from 'http-status-codes';
 import { userSchema } from "src/validations/UserValidation";
 import Joi from "joi";
 import { IUser } from "@entities/User";
-const { BAD_REQUEST, CREATED, OK } = StatusCodes;
+const { CREATED, OK } = StatusCodes;
 
 
 class UserController{

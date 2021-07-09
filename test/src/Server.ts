@@ -7,16 +7,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
-import KnexDB from "./db/knex"
-//import BaseRouter from './routes';
-//import UserController from "@Controllers/UserController"
-//import finalRouter from '@Controllers/UserController';
-//import baseRouter from '@Controllers/UserController';
-//import userControllerRouter from '@Controllers/UserController';
-
 import logger from '@shared/Logger';
-import User from '@entities/User';
-//import userController from '@Controllers/UserController';
 import baseRouter from './controllers';
 
 
@@ -44,14 +35,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(helmet());
 }
 
-//const knx = new KnexDB();
-//knx.init();
-
-
-// Add APIs
-//app.use('/api', BaseRouter);
-//app.use('/api', baseRouter);
-//app.use('/api', finalController);
 app.use('/api', baseRouter);
 
 // Print API errors
