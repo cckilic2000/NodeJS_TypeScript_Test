@@ -1,5 +1,4 @@
-import User, { IUser } from '@entities/User';
-import { getRandomInt } from '@shared/functions';
+import { IUser } from '@entities/User';
 import userRepository from 'src/repositories/UserRepository';
 
 
@@ -30,7 +29,6 @@ class UserService {
 
     public async add(user: IUser): Promise<number> {
         try {
-            user.id = getRandomInt();
             const done = await userRepository.add(user);
             return done;    
         } catch (error) {
