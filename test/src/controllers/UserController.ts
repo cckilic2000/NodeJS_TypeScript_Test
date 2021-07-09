@@ -16,8 +16,8 @@ class UserController{
     }
 
     getAllUsers(req: express.Request, res: express.Response, next: express.NextFunction){
-        const userList = userService.getAll().
-        then(result=>{
+        userService.getAll()
+        .then(result=>{
             result.forEach(element => {
                console.log("name: " + element.name + " /// email: " + element.email + " /// id: " + element.id); 
             });
